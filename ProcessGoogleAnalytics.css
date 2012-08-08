@@ -1,0 +1,81 @@
+/* jqplot Styles*/
+
+.ga_chart_lines{
+	width: 100%; 
+	height: 200px;
+}
+
+.jqplot-highlighter-tooltip{
+	font-size: 11px;
+	border: 1px solid #C50F68;
+	padding: 6px;
+	background-color: #F8FAFB;
+	color: #000000 !important;
+}
+
+.jqplot-highlighter-tooltip span.ga_highlight{
+	color: #C50F68;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+/*General Styles*/
+
+a.ga_display_more_rows{
+	font-size: 11px;
+}
+
+.bg_linear_gradient{
+	background-color: #E4EBEE;
+	background: -webkit-linear-gradient(#E4EBEE 0%, #ffffff 100%);
+	background: -moz-linear-gradient(#E4EBEE 0%, #ffffff 100%);
+	background: -o-linear-gradient(#E4EBEE 0%, #ffffff 100%);
+	background: -linear-gradient(#E4EBEE 0%, #ffffff 100%);
+}
+
+/*Table styles*/
+
+table.ga_table{
+	width: 100%;
+}
+
+table.ga_table tr td{
+	padding: 4px;
+	border: 1px solid #cccccc;
+	background-color: #F7F9FA;
+}
+
+table.ga_table tr:nth-child(2n+1) td{
+	background-color: #ffffff;
+}
+
+table.ga_table tr th{
+	padding: 5px;
+	border: 1px solid #cccccc;
+	background-color: #E4EBEE;
+	font-weight: bold;
+}
+
+table.ga_table td div.percent{
+	height: 15px;
+	display: block;
+	float: left;
+	background-color: #DB1174;
+	margin: 3px 5px 0px 0px;
+}
+
+table.ga_table_highlight td{
+	padding: 10px !important;
+	font-weight: bold;
+	font-size: 18px;
+}
+
+td span.desc{
+	font-weight: normal;
+	font-size: 12px;
+}
+
+td.more_rows{
+	border: none !important; 
+	background-color: #ffffff !important;
+}
