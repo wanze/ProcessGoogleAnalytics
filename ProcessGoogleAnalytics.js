@@ -1,9 +1,53 @@
 $(document).ready(function(){
-
+	
+	//States which sections are loaded. Audience is loaded by default
+	var loadedContent = false;
+	var loadedTraffic = false;
+		
 	/**
-	 * Audience - Visits - Chart Visits
+	 * Initialize JqueryWireTabs
 	 */
-	$.post(config.urls.admin + config.ga_page_name + '/audiencevisits/',function(data){
+	$('#ga_form').WireTabs({
+		items : $('#ga_form > .Inputfields > .InputfieldWrapper'),
+		id : 'ga_tabs'	
+	});
+	
+	/**
+	 * Save Options
+	 */
+	$('#ga_saveOptions').click(function(){
+		var startDate = '';
+		var endDate = '';
+		if ($('#ga_defaultDates:checked').size() == 0) {
+			startDate = $('#ga_startDate').val();
+			endDate = $('#ga_endDate').val();
+		}
+		var data = { 'startDate' : startDate, 'endDate' : endDate };
+		$.post(config.urls.admin + config.ga_page_name + '/changeoptions/', data, function(){
+			window.location.reload();		
+		});
+		return false;
+	});
+	
+	/**
+	 * Handle clicks on Tabs
+	 */
+	$('#_contentWrapper, #_trafficWrapper').click(function(){
+		var section = $(this).attr('id');
+		if (section == '_contentWrapper' && !loadedContent) {
+			loadContent();
+			loadedContent = true;
+		} else if (section == '_trafficWrapper' && !loadedTraffic) {
+			loadTraffic();
+			loadedTraffic = true;
+		}
+	});
+	
+	
+	/**
+	 * Helper function to render a Line Chart with jqplot
+	 */
+	var _renderLineChart = function (div,data) {
 		
 		var options = {
 		    axes:{
@@ -29,103 +73,81 @@ $(document).ready(function(){
 				background: '#F7F9FA'
 			}
     	};
+
+		$.jqplot(div,data,options);
 		
-		$.jqplot('audience_visits_chart',data,options);
-		
-	},'json');
-	
-	/**
-	 * Audience - Visits - Statistics
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/audiencevisitsstats/',function(data){
-		$('#audience_visits_stats').html(data);
-	},'html');
+	}
 
 	/**
-	 * Audience - Demographics
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/audiencedemographics/',function(data){
-		$('#audience_demographics').html(data);
-	},'html');
-
-	/**
-	 * Audience - System
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/audiencesystem/',function(data){
-		$('#audience_system').html(data);
-	},'html');	
-	
-	/**
-	 * Audience - Mobile
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/audiencemobile/',function(data){
-		$('#audience_mobile').html(data);
-	},'html');	
-
-	
-	/**
-	 * Content - Chart Pageviews by Date
+	 * Load all statistics for the Audience section
 	 */
-	$.post(config.urls.admin + config.ga_page_name + '/contentpageviews/',function(data){
+	var loadAudience = function() {
+
+		//Chart Visits
+		$.post(config.urls.admin + config.ga_page_name + '/audiencevisits/',function(data){
+			_renderLineChart('audience_visits_chart',data);		
+		},'json');
 		
-		var options = {
-		    axes:{
-		    	xaxis:{renderer:$.jqplot.DateAxisRenderer},
-		    	yaxis:{
-		    		min:null,
-		    		tickOptions:{
-			    		formatString: '<br><span class="ga_highlight">%i</span>'
-		    		}
-		    	}
-		    },
-		    series:[{ lineWidth:4, 
-		    	  	  markerOptions: { style : 'circle' },
-		    	  	  color : config.ga_chart_color
-		    	   }],
-		    highlighter: {
-			    show: true,
-			    sizeAdjust: 7.5
-			},
-			cursor: {
-				show: false
-			},
-			grid: {
-				background: '#F7F9FA'
-			}
-    	};
+		//General Statistics
+		$.post(config.urls.admin + config.ga_page_name + '/audiencevisitsstats/',function(data){
+			$('#audience_visits_stats').html(data);
+		},'html');
 		
-		$.jqplot('content_pageviews_chart',data,options);
+		//Demographics
+		$.post(config.urls.admin + config.ga_page_name + '/audiencedemographics/',function(data){
+			$('#audience_demographics').html(data);
+		},'html');
 		
-	},'json');
+		//System
+		$.post(config.urls.admin + config.ga_page_name + '/audiencesystem/',function(data){
+			$('#audience_system').html(data);
+		},'html');	
+		
+		//Mobile		
+		$.post(config.urls.admin + config.ga_page_name + '/audiencemobile/',function(data){
+			$('#audience_mobile').html(data);
+		},'html');	
+		
+	}
 
 	/**
-	 * Content - Statistics
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/contentstats/',function(data){
-		$('#content_stats').html(data);
-	},'html');
+	 * Load all statistics for the Content section
+	 */
+	var loadContent = function() {
+		
+		//Chart pageviews
+		$.post(config.urls.admin + config.ga_page_name + '/contentpageviews/',function(data){		
+			_renderLineChart('content_pageviews_chart',data);		
+		},'json');
+		
+		//Pages
+		$.post(config.urls.admin + config.ga_page_name + '/contentstats/',function(data){
+			$('#content_stats').html(data);
+		},'html');
+		
+	}
 
 	/**
-	 * Traffic Sources - Statistics
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/trafficsourcesstats/',function(data){
-		$('#traffic_sources_stats').html(data);
-	},'html');
-
-	/**
-	 * Traffic Sources - Keywords
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/trafficsourceskeywords/',function(data){
-		$('#traffic_sources_keywords').html(data);
-	},'html');
-
-	/**
-	 * Traffic Sources - Referral
-	 */ 	
-	$.post(config.urls.admin + config.ga_page_name + '/trafficsourcesreferral/',function(data){
-		$('#traffic_sources_referral').html(data);
-	},'html');
-
+	 * Load all statistics for the Traffic sources section
+	 */	
+	var loadTraffic = function() {
+		
+		//General stats
+		$.post(config.urls.admin + config.ga_page_name + '/trafficsourcesstats/',function(data){
+			$('#traffic_sources_stats').html(data);
+		},'html');
+	
+		//Keywords
+		$.post(config.urls.admin + config.ga_page_name + '/trafficsourceskeywords/',function(data){
+			$('#traffic_sources_keywords').html(data);
+		},'html');
+		
+		//Referral traffic
+		$.post(config.urls.admin + config.ga_page_name + '/trafficsourcesreferral/',function(data){
+			$('#traffic_sources_referral').html(data);
+		},'html');
+	
+	}
 	
 	/**
 	 * Toggle Tables by clicking Links
@@ -147,5 +169,8 @@ $(document).ready(function(){
 		$(this).parents('tr').hide().nextAll('tr:hidden').slice(0,11).show();
 		return false;
 	});
+	
+	//Load audience section by default
+	loadAudience();
 		
 });
