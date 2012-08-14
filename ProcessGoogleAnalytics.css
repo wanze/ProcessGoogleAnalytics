@@ -33,6 +33,10 @@ a.ga_display_more_rows{
 	background: -linear-gradient(#E4EBEE 0%, #ffffff 100%);
 }
 
+#traffic_sources_keywords{
+	margin-top: 31px;
+}
+
 /*Table styles*/
 
 table.ga_table{

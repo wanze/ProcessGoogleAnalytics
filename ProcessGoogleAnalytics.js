@@ -15,7 +15,7 @@ $(document).ready(function(){
 	/**
 	 * Save Options
 	 */
-	$('#ga_saveOptions').click(function(){
+	$('#ga_saveOptions').click(function() {
 		var startDate = '';
 		var endDate = '';
 		if ($('#ga_defaultDates:checked').size() == 0) {
@@ -23,7 +23,7 @@ $(document).ready(function(){
 			endDate = $('#ga_endDate').val();
 		}
 		var data = { 'startDate' : startDate, 'endDate' : endDate };
-		$.post(config.urls.admin + config.ga_page_name + '/changeoptions/', data, function(){
+		$.post(config.ga_url + 'changeoptions/', data, function(){
 			window.location.reload();		
 		});
 		return false;
@@ -32,7 +32,7 @@ $(document).ready(function(){
 	/**
 	 * Handle clicks on Tabs
 	 */
-	$('#_contentWrapper, #_trafficWrapper').click(function(){
+	$('#_contentWrapper, #_trafficWrapper').click(function() {
 		var section = $(this).attr('id');
 		if (section == '_contentWrapper' && !loadedContent) {
 			loadContent();
@@ -84,27 +84,27 @@ $(document).ready(function(){
 	var loadAudience = function() {
 
 		//Chart Visits
-		$.post(config.urls.admin + config.ga_page_name + '/audiencevisits/',function(data){
+		$.post(config.ga_url + 'audiencevisits/', function(data) {
 			_renderLineChart('audience_visits_chart',data);		
 		},'json');
 		
 		//General Statistics
-		$.post(config.urls.admin + config.ga_page_name + '/audiencevisitsstats/',function(data){
+		$.post(config.ga_url + 'audiencevisitsstats/', function(data) {
 			$('#audience_visits_stats').html(data);
 		},'html');
 		
 		//Demographics
-		$.post(config.urls.admin + config.ga_page_name + '/audiencedemographics/',function(data){
+		$.post(config.ga_url + 'audiencedemographics/', function(data) {
 			$('#audience_demographics').html(data);
 		},'html');
 		
 		//System
-		$.post(config.urls.admin + config.ga_page_name + '/audiencesystem/',function(data){
+		$.post(config.ga_url + 'audiencesystem/', function(data) {
 			$('#audience_system').html(data);
 		},'html');	
 		
 		//Mobile		
-		$.post(config.urls.admin + config.ga_page_name + '/audiencemobile/',function(data){
+		$.post(config.ga_url + 'audiencemobile/', function(data) {
 			$('#audience_mobile').html(data);
 		},'html');	
 		
@@ -116,12 +116,12 @@ $(document).ready(function(){
 	var loadContent = function() {
 		
 		//Chart pageviews
-		$.post(config.urls.admin + config.ga_page_name + '/contentpageviews/',function(data){		
+		$.post(config.ga_url + 'contentpageviews/', function(data) {		
 			_renderLineChart('content_pageviews_chart',data);		
 		},'json');
 		
 		//Pages
-		$.post(config.urls.admin + config.ga_page_name + '/contentstats/',function(data){
+		$.post(config.ga_url + 'contentstats/', function(data) {
 			$('#content_stats').html(data);
 		},'html');
 		
@@ -133,17 +133,17 @@ $(document).ready(function(){
 	var loadTraffic = function() {
 		
 		//General stats
-		$.post(config.urls.admin + config.ga_page_name + '/trafficsourcesstats/',function(data){
+		$.post(config.ga_url + 'trafficsourcesstats/', function(data) {
 			$('#traffic_sources_stats').html(data);
 		},'html');
 	
 		//Keywords
-		$.post(config.urls.admin + config.ga_page_name + '/trafficsourceskeywords/',function(data){
+		$.post(config.ga_url + 'trafficsourceskeywords/', function(data) {
 			$('#traffic_sources_keywords').html(data);
 		},'html');
 		
 		//Referral traffic
-		$.post(config.urls.admin + config.ga_page_name + '/trafficsourcesreferral/',function(data){
+		$.post(config.ga_url + 'trafficsourcesreferral/', function(data) {
 			$('#traffic_sources_referral').html(data);
 		},'html');
 	
@@ -152,7 +152,7 @@ $(document).ready(function(){
 	/**
 	 * Toggle Tables by clicking Links
 	 */
-	$('.ga_header_links a').click(function(){
+	$('.ga_header_links a').click(function() {
 		var elem = $(this);
 		elem.siblings('a').removeClass('on');
 		elem.addClass('on');
@@ -165,7 +165,7 @@ $(document).ready(function(){
 	/**
 	 * Display more rows from a table
 	 */
-	$('a.ga_display_more_rows').live('click',function(){
+	$('a.ga_display_more_rows').live('click',function() {
 		$(this).parents('tr').hide().nextAll('tr:hidden').slice(0,11).show();
 		return false;
 	});
