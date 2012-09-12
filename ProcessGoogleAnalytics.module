@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Google Analytics Process Module v 1.1.1
+ * Google Analytics Process Module v 1.1.2
  * View your Google Analytics Statistics in the Processwire Admin Panel
  *
  * @author Stefan Wanzenried (Wanze)
@@ -41,6 +41,7 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		'redirectUri' => '',
 		'developerKey' => '',
 		'accountId' => '',
+		'accessToken' => '',
 		'startDate' => '',
 		'endDate' => '',
 		'maxResults' => 30,
@@ -64,6 +65,23 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		'ga_traffic_sources_referral',
 		'ga_traffic_sources_stats',
 	);
+	
+	//Default Date ranges to choose in the Modules options
+	protected static $dates = array(
+			'd1' => 'last 24 hours',
+			'd2' => 'last 2 days',
+			'd3' => 'last 3 days',
+			'd4' => 'last 4 days',
+			'd5' => 'last 5 days',
+			'd6' => 'last 6 days',
+			'd7' => 'last week',
+			'd14' => 'last 2 weeks',
+			'd21' => 'last 3 weeks',
+			'm1' => 'last month',
+			'm2' => 'last 2 months',
+			'm3' => 'last 3 months',
+		);
+	
 		
 	/**
 	 * getModuleInfo is a method required by all modules to tell ProcessWire about them
@@ -77,12 +95,10 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		return array(
 			'title' => __('Google Analytics',__FILE__),         
 			'summary' => __('View your Google Analytics Statistics in the Processwire Admin Panel',__FILE__),
-			'version' => 111,
+			'version' => 112,
 			'href' => 'http://processwire.com/talk/topic/1609-processgoogleanalytics/', 
 			'permanent' => false, 
 			'permission' => self::PERMISSION_NAME,
-			'requires' => 'MarkupCache',
-			'installs' => 'MarkupCache',
 		);
 
 	}
@@ -927,7 +943,6 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		$this->ga_client->setClientId($this->clientId);
 		$this->ga_client->setClientSecret($this->clientSecret);
 		$this->ga_client->setRedirectUri($this->redirectUri);
-		$this->ga_client->setDeveloperKey($this->developerKey);
 		$this->ga_service = new apiAnalyticsService($this->ga_client);
 		if ($this->accessToken) { //Set the accessToken to ga client instance
 			$this->ga_client->setAccessToken($this->accessToken);	
@@ -1062,35 +1077,18 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		
 		//Ga Account ID - only display when Account was chosen with dropdown before
 		$field = ($data['accountId']) ? $modules->get("InputfieldText") : $modules->get("InputfieldHidden");
-		$field = $modules->get("InputfieldText");
 		$field->attr('name+id', 'accountId');
 		$field->attr('value', $data['accountId']);
 		$field->label = "Google Analytics Account Id";
-		$field->description = "Delete this Id and you can choose another Analytics Account again.";
+		$field->description = "Delete this Id and you can choose another Analytics Account (Domain) from the Dropdown again.";
 		$fields->append($field);			
-		
-		//Default Date ranges
-		$dates = array(
-			'd1' => 'last 24 hours',
-			'd2' => 'last 2 days',
-			'd3' => 'last 3 days',
-			'd4' => 'last 4 days',
-			'd5' => 'last 5 days',
-			'd6' => 'last 6 days',
-			'd7' => 'last week',
-			'd14' => 'last 2 weeks',
-			'd21' => 'last 3 weeks',
-			'm1' => 'last month',
-			'm2' => 'last 2 months',
-			'm3' => 'last 3 months',
-		);
-		
+				
 		$field = $modules->get('InputfieldSelect');
 		$field->attr('name+id', 'dateRange');
 		$field->attr('value', $data['dateRange']);
 		$field->label = "Default date range";
 		$field->description = "Select the default date range to display the statistics from";
-		$field->addOptions($dates);
+		$field->addOptions(self::$dates);
 		$fields->append($field);
 		
 		//Max Results
