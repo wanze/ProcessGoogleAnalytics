@@ -73,7 +73,8 @@ $(document).ready(function(){
 				background: '#F7F9FA'
 			}
     	};
-
+    	
+    	$(div).removeClass('load');
 		$.jqplot(div,data,options);
 		
 	}
@@ -90,22 +91,22 @@ $(document).ready(function(){
 		
 		//General Statistics
 		$.post(config.ga_url + 'audiencevisitsstats/', function(data) {
-			$('#audience_visits_stats').html(data);
+			$('#audience_visits_stats').removeClass('load').html(data);
 		},'html');
 		
 		//Demographics
 		$.post(config.ga_url + 'audiencedemographics/', function(data) {
-			$('#audience_demographics').html(data);
+			$('#audience_demographics').removeClass('load').html(data);
 		},'html');
 		
 		//System
 		$.post(config.ga_url + 'audiencesystem/', function(data) {
-			$('#audience_system').html(data);
+			$('#audience_system').removeClass('load').html(data);
 		},'html');	
 		
 		//Mobile		
 		$.post(config.ga_url + 'audiencemobile/', function(data) {
-			$('#audience_mobile').html(data);
+			$('#audience_mobile').removeClass('load').html(data);
 		},'html');	
 		
 	}
@@ -122,7 +123,7 @@ $(document).ready(function(){
 		
 		//Pages
 		$.post(config.ga_url + 'contentstats/', function(data) {
-			$('#content_stats').html(data);
+			$('#content_stats').removeClass('load').html(data);
 		},'html');
 		
 	}
@@ -134,17 +135,17 @@ $(document).ready(function(){
 		
 		//General stats
 		$.post(config.ga_url + 'trafficsourcesstats/', function(data) {
-			$('#traffic_sources_stats').html(data);
+			$('#traffic_sources_stats').removeClass('load').html(data);
 		},'html');
 	
 		//Keywords
 		$.post(config.ga_url + 'trafficsourceskeywords/', function(data) {
-			$('#traffic_sources_keywords').html(data);
+			$('#traffic_sources_keywords').removeClass('load').html(data);
 		},'html');
 		
 		//Referral traffic
 		$.post(config.ga_url + 'trafficsourcesreferral/', function(data) {
-			$('#traffic_sources_referral').html(data);
+			$('#traffic_sources_referral').removeClass('load').html(data);
 		},'html');
 	
 	}

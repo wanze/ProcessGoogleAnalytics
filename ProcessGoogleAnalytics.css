@@ -21,6 +21,36 @@
 
 /*General Styles*/
 
+#audience_visits_stats{
+	margin-top: 10px;
+}
+
+.load{
+	background-image: url(ajax-loader.png);
+	background-position: center center;
+	background-repeat: no-repeat;
+	min-height: 50px;
+}
+
+span.compare {
+	font-size: 11px;
+	display: block;
+	float: right;
+	font-weight: bold;
+}
+
+.plus {
+	color: green;
+}
+
+.minus {
+	color: red;
+}
+
+.ga_header_links {
+	margin-bottom: 10px;
+}
+
 a.ga_display_more_rows{
 	font-size: 11px;
 }
@@ -34,7 +64,7 @@ a.ga_display_more_rows{
 }
 
 #traffic_sources_keywords{
-	margin-top: 31px;
+	margin-top: 30px;
 }
 
 /*Table styles*/
@@ -74,7 +104,7 @@ table.ga_table_highlight td{
 	font-size: 18px;
 }
 
-td span.desc{
+td div.desc{
 	font-weight: normal;
 	font-size: 12px;
 }
