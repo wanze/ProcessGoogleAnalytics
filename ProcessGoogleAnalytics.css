@@ -26,7 +26,7 @@
 }
 
 .load{
-	background-image: url(ajax-loader.png);
+	background-image: url(ajax-loader.gif);
 	background-position: center center;
 	background-repeat: no-repeat;
 	min-height: 50px;
