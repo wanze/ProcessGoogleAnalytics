@@ -793,13 +793,13 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		$date_from = $this->modules->get('InputfieldDatetime');
 		$date_from->label = $this->_('Start date');
 		$date_from->attr('id','ga_startDate');
-		//$date_from->attr('value',$this->startDate);
+		$date_from->attr('value',$this->startDate);
 		$date_from->dateInputFormat = $this->dateFormatInput;
 		$date_from->columnWidth = 50;
 		$date_to = $this->modules->get('InputfieldDatetime');
 		$date_to->label = $this->_('End date');
 		$date_to->attr('id','ga_endDate');
-		//$date_to->attr('value',$this->endDate);
+		$date_to->attr('value',$this->endDate);
 		$date_to->dateInputFormat = $this->dateFormatInput;
 		$date_to->columnWidth = 50;
 		$checkbox = $this->modules->get('InputfieldCheckbox');
