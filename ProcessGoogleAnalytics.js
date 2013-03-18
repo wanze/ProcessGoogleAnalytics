@@ -6,31 +6,17 @@ $(document).ready(function(){
 		
 	/**
 	 * Initialize JqueryWireTabs
+	 *
 	 */
 	$('#ga_form').WireTabs({
 		items : $('#ga_form > .Inputfields > .InputfieldWrapper'),
-		id : 'ga_tabs'	
-	});
-	
-	/**
-	 * Save Options
-	 */
-	$('#ga_saveOptions').click(function() {
-		var startDate = '';
-		var endDate = '';
-		if ($('#ga_defaultDates:checked').size() == 0) {
-			startDate = $('#ga_startDate').val();
-			endDate = $('#ga_endDate').val();
-		}
-		var data = { 'startDate' : startDate, 'endDate' : endDate };
-		$.post(config.ga_url + 'changeoptions/', data, function(){
-			window.location.reload();		
-		});
-		return false;
+		id : 'ga_tabs',
+		rememberTabs: -1 //Never remind
 	});
 	
 	/**
 	 * Handle clicks on Tabs
+	 *
 	 */
 	$('#_contentWrapper, #_trafficWrapper').click(function() {
 		var section = $(this).attr('id');
@@ -45,7 +31,8 @@ $(document).ready(function(){
 	
 	
 	/**
-	 * Helper function to render a Line Chart with jqplot
+	 * Render a line chart with jqplot
+	 *
 	 */
 	var _renderLineChart = function (div,data) {
 		
@@ -81,93 +68,110 @@ $(document).ready(function(){
 
 	/**
 	 * Load all statistics for the Audience section
+	 *
 	 */
 	var loadAudience = function() {
 
 		//Chart Visits
-		$.post(config.ga_url + 'audiencevisits/', function(data) {
-			_renderLineChart('audience_visits_chart',data);		
+		$.get(config.ga_url + 'audiencevisits/',  function(data) {
+			if (data != null) _renderLineChart('audience_visits_chart', data);		
 		},'json');
 		
 		//General Statistics
-		$.post(config.ga_url + 'audiencevisitsstats/', function(data) {
+		$.get(config.ga_url + 'audiencevisitsstats/', function(data) {
 			$('#audience_visits_stats').removeClass('load').html(data);
 		},'html');
 		
 		//Demographics
-		$.post(config.ga_url + 'audiencedemographics/', function(data) {
+		$.get(config.ga_url + 'audiencedemographics/', function(data) {
 			$('#audience_demographics').removeClass('load').html(data);
+			$('table.AdminDataTable td').find('a.ga_display_more_rows').parents('tr').nextAll().hide();
 		},'html');
 		
 		//System
-		$.post(config.ga_url + 'audiencesystem/', function(data) {
+		$.get(config.ga_url + 'audiencesystem/', function(data) {
 			$('#audience_system').removeClass('load').html(data);
+			$('table.AdminDataTable td').find('a.ga_display_more_rows').parents('tr').nextAll().hide();
 		},'html');	
 		
 		//Mobile		
-		$.post(config.ga_url + 'audiencemobile/', function(data) {
+		$.get(config.ga_url + 'audiencemobile/', function(data) {
 			$('#audience_mobile').removeClass('load').html(data);
+			$('table.AdminDataTable td').find('a.ga_display_more_rows').parents('tr').nextAll().hide();
 		},'html');	
 		
 	}
 
 	/**
 	 * Load all statistics for the Content section
+	 *
 	 */
 	var loadContent = function() {
 		
 		//Chart pageviews
-		$.post(config.ga_url + 'contentpageviews/', function(data) {		
-			_renderLineChart('content_pageviews_chart',data);		
+		$.get(config.ga_url + 'contentpageviews/', function(data) {		
+			if (data != null) _renderLineChart('content_pageviews_chart', data);		
 		},'json');
 		
 		//Pages
-		$.post(config.ga_url + 'contentstats/', function(data) {
+		$.get(config.ga_url + 'contentstats/', function(data) {
 			$('#content_stats').removeClass('load').html(data);
+		},'html');
+		
+		//Top Content
+		$.get(config.ga_url + 'contenttoppages/', function(data) {
+			$('#content_top_pages').removeClass('load').html(data);
+			$('table.AdminDataTable td').find('a.ga_display_more_rows').parents('tr').nextAll().hide();
 		},'html');
 		
 	}
 
 	/**
 	 * Load all statistics for the Traffic sources section
+	 *
 	 */	
 	var loadTraffic = function() {
 		
 		//General stats
-		$.post(config.ga_url + 'trafficsourcesstats/', function(data) {
+		$.get(config.ga_url + 'trafficsourcesstats/', function(data) {
 			$('#traffic_sources_stats').removeClass('load').html(data);
 		},'html');
 	
 		//Keywords
-		$.post(config.ga_url + 'trafficsourceskeywords/', function(data) {
+		$.get(config.ga_url + 'trafficsourceskeywords/', function(data) {
 			$('#traffic_sources_keywords').removeClass('load').html(data);
+			$('table.AdminDataTable td').find('a.ga_display_more_rows').parents('tr').nextAll().hide();
 		},'html');
 		
 		//Referral traffic
-		$.post(config.ga_url + 'trafficsourcesreferral/', function(data) {
+		$.get(config.ga_url + 'trafficsourcesreferral/', function(data) {
 			$('#traffic_sources_referral').removeClass('load').html(data);
+			$('table.AdminDataTable td').find('a.ga_display_more_rows').parents('tr').nextAll().hide();
 		},'html');
 	
 	}
-	
+		
 	/**
 	 * Toggle Tables by clicking Links
+	 *
 	 */
 	$('.ga_header_links a').click(function() {
-		var elem = $(this);
-		elem.siblings('a').removeClass('on');
-		elem.addClass('on');
-		var url = elem.attr('href');
-		elem.parent().next('div').children('.toggle_element').hide();
-		$(url).show();
+		var $elem = $(this);
+		$elem.siblings('a').removeClass('on');
+		$elem.addClass('on');
+		var tableClass = $elem.attr('href');
+		$wrapper = $elem.parent().next('.ga_tables_wrapper');
+		$wrapper.find('table:visible').hide();
+		$wrapper.find('table.'+tableClass).show();
 		return false;
 	});
 	
 	/**
 	 * Display more rows from a table
+	 *
 	 */
-	$('a.ga_display_more_rows').live('click',function() {
-		$(this).parents('tr').hide().nextAll('tr:hidden').slice(0,11).show();
+	$('a.ga_display_more_rows').live('click', function() {
+		$(this).parents('tr').hide().nextAll('tr:hidden').show();
 		return false;
 	});
 	
