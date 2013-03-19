@@ -1,7 +1,8 @@
 # Google Analytics Page for ProcessWire
 This module adds a new "Google-Analytics" Page in your Admin-Panel and displays various Statistics from a Google Analytics Account.
 
-	**Important** 
+
+**Important**   
 If you update from a version < 1.2.0, you need to revoke authentication and choose the Google Analytics account again.   
 Check "Revoke Authentication" in the module's config and save. Follow step 4,5 and 6 from the Installation section below.
 
@@ -16,7 +17,7 @@ Check "Revoke Authentication" in the module's config and save. Follow step 4,5 a
 * cURL
 
 ## Installation
-1. Create a Project in the Google APIs console: https://code.google.com/apis/console/.  
+1. Create a Project in the Google APIs console: https://code.google.com/apis/console/  
 The project can be used for this module on multiple ProcessWire sites
 	* Under services, enable the Analytics API
 	* Under API Access: Create an Oauth 2.0 Client-ID
