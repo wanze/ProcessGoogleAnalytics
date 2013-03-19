@@ -1,6 +1,10 @@
 # Google Analytics Page for ProcessWire
 This module adds a new "Google-Analytics" Page in your Admin-Panel and displays various Statistics from a Google Analytics Account.
 
+	<strong>Important</strong>  
+If you update to version 1.2, you need to revoke authentication and choose the Google Analytics account again.   
+Check "Revoke Authentication" in the module's config and save. Follow step 4,5 and 6 from the Installation section below.
+
 ## Resources
 * Forum Thread with Screenshots and Install Instructions: http://processwire.com/talk/topic/1609-processgoogleanalytics/
 * Module on the Processwire Modules page: http://modules.processwire.com/modules/process-google-analytics/
