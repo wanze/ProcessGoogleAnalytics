@@ -6,7 +6,6 @@
  *
  * @author Stefan Wanzenried (Wanze)
  * @copyright Stefan Wanzenried
- * <http://www.everchanging.ch>
  *
  * ProcessWire 2.x 
  * Copyright (C) 2011 by Ryan Cramer 
@@ -97,7 +96,7 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		return array(
 			'title' => __('Google Analytics',__FILE__),         
 			'summary' => __('View your Google Analytics Statistics in the Processwire Admin Panel',__FILE__),
-			'version' => 120,
+			'version' => 121,
 			'href' => 'http://processwire.com/talk/topic/1609-processgoogleanalytics/', 
 			'permanent' => false, 
 			'permission' => self::PERMISSION_NAME,
@@ -175,13 +174,12 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 			//Make some config variables available in javascript
 			$this->config->js('ga_url', $this->page->url);
 			$this->config->js('ga_chart_color', $this->chartColor);
+            $this->wire('breadcrumbs')->append(new Breadcrumb($this->page->url, $this->page->title));
 		}
 
 		//Initialize the Google API		
-		$this->loadGoogleApi(); 
-
-		return parent::init();
-
+		$this->loadGoogleApi();
+		parent::init();
 	}
 
 	
@@ -937,7 +935,8 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 		
 		$startDate = strftime($this->dateFormat,strtotime($this->startDate));
 		$endDate = strftime($this->dateFormat,strtotime($this->endDate));
-		return "<h2>{$startDate} - {$endDate}</h2>" . $form->render();
+		$this->wire('processHeadline', $startDate . " - " . $endDate);
+        return $form->render();
 
 	}
 		
