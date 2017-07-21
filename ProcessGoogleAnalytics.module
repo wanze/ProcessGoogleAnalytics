@@ -100,6 +100,7 @@ class ProcessGoogleAnalytics extends Process implements Module, ConfigurableModu
 			'href' => 'http://processwire.com/talk/topic/1609-processgoogleanalytics/', 
 			'permanent' => false, 
 			'permission' => self::PERMISSION_NAME,
+			'icon' => 'bar-chart'
 		);
 
 	}
